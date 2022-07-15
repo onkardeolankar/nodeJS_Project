@@ -115,5 +115,5 @@ app.get("/", function (req, res) {
 
 app.use('/movies', moviesRouter);
 app.listen(PORT, () => console.log(`App Started in ${PORT}`));
-
+console.log(sum);
 
