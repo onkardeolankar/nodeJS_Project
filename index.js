@@ -12,7 +12,8 @@ dotenv.config();
 
 const app = express();
 
-const PORT = 4000;
+// const PORT = 4000;
+const PORT = process.env.PORT;
 const movies = [
   {
     id: "100",
@@ -117,6 +118,7 @@ app.get("/", function (req, res) {
 app.use('/movies', moviesRouter);
 // app.use('/movies', HelpCount);
 app.listen(PORT, () => console.log(`App Started in ${PORT}`));
+
 
 
 export {client};
