@@ -1,4 +1,4 @@
-import { client } from "../index.js";
+import  {client}  from "./index.js";
 
 export async function updateMovieById(id, data) {
   return await client
@@ -31,3 +31,4 @@ export async function getAllMovies(req) {
     .find(req.query)
     .toArray();
 }
+// export const HelpCount = client;

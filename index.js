@@ -3,6 +3,7 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from 'dotenv';
+// import {HelpCount} from "./helper.js";
 import {moviesRouter} from "./movies.js";
 // import cors from "cors";
 dotenv.config();
@@ -114,6 +115,9 @@ app.get("/", function (req, res) {
 });
 
 app.use('/movies', moviesRouter);
+// app.use('/movies', HelpCount);
 app.listen(PORT, () => console.log(`App Started in ${PORT}`));
-console.log(sum);
+
+
+export {client};
 
