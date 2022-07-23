@@ -1,11 +1,10 @@
 // const express = require("express");
-
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from 'dotenv';
 // import {HelpCount} from "./helper.js";
 import {moviesRouter} from "./movies.js";
-// import cors from "cors";
+import cors from "cors";
 dotenv.config();
 
 // console.log(process.env.MONGO_URL);
@@ -118,7 +117,13 @@ const mobiles = [
   },
 ];
 app.use(express.json());
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 
+app.use(cors(corsOptions));
 // const PORT = process.env.PORT;
 
 // const MONGO_URL = "mongodb://localhost:27017";
