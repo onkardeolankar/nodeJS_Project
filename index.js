@@ -94,6 +94,29 @@ const PORT = process.env.PORT;
 //     trailer: "https://www.youtube.com/embed/NgsQ8mVkN8w",
 //   },
 // ];
+
+const mobiles = [
+  {
+    model: "OnePlus 9 5G",
+    img: "https://m.media-amazon.com/images/I/61fy+u9uqPL._SX679_.jpg",
+    company: "Oneplus",
+  },
+  {
+    model: "Iphone 13 mini",
+    img: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-mini-blue-select-2021?wid=470&hei=556&fmt=jpeg&qlt=95&.v=1645572315986",
+    company: "Apple",
+  },
+  {
+    model: "Samsung s21 ultra",
+    img: "https://m.media-amazon.com/images/I/81kfA-GtWwL._SY606_.jpg",
+    company: "Samsung",
+  },
+  {
+    model: "Xiomi mi 11",
+    img: "https://m.media-amazon.com/images/I/51K4vNxMAhS._AC_SX522_.jpg",
+    company: "Xiomi",
+  },
+];
 app.use(express.json());
 
 // const PORT = process.env.PORT;
@@ -119,7 +142,26 @@ app.use('/movies', moviesRouter);
 // app.use('/movies', HelpCount);
 app.listen(PORT, () => console.log(`App Started in ${PORT}`));
 
+app.get("/mobiles", async function (req, res){
 
+  const mobiles = await client
+  .db("b32we")
+  .collection("mobiles")
+  .find({})
+  .toArray();
+
+  res.send(mobiles);
+});
+
+app.post("/mobiles", express.json(), async function (req, res){
+  const data = req.body;
+  const result = await client
+  .db("b32we")
+  .collection("mobiles")
+  .insertMany(data);
+
+  res.send(result);
+});
 
 export {client};
 
