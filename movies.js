@@ -1,7 +1,8 @@
 import express from "express";
+import { auth } from "./auth.js";
 import { getAllMovies, getMovieById, deleteMovieById, createMovies, updateMovieById } from "./helper.js";
 const router = express.Router();
-router.get("/", async function (req, res) {
+router.get("/", auth, async function (req, res) {
 
     if(req.query.rating){
         req.query.rating = + req.query.rating;
@@ -12,7 +13,7 @@ router.get("/", async function (req, res) {
         res.send(movies1);
     });
    
-   router.get("/:id", async function (req, res) {
+   router.get("/:id", auth, async function (req, res) {
      const { id } = req.params;
      console.log(req.params, id);
    
@@ -25,7 +26,7 @@ router.get("/", async function (req, res) {
      res.send(movie);
    });
    
-   router.delete("/:id", async function (req, res) {
+   router.delete("/:id",auth, async function (req, res) {
     const { id } = req.params;
     console.log(req.params, id);
   
@@ -40,13 +41,13 @@ router.get("/", async function (req, res) {
   });
 
    //Create Movies
-   router.post("/", express.json(), async function (req, res) {
+   router.post("/", express.json(),auth, async function (req, res) {
      const data = req.body;
      const result = await createMovies(data);
      res.send(result);
    });
    
-   router.put("/:id", async function (req, res) {
+   router.put("/:id",auth, async function (req, res) {
     const { id } = req.params;
     const data = req.body;
   
@@ -57,5 +58,3 @@ router.get("/", async function (req, res) {
 });
 
    export const moviesRouter = router;
-
-

@@ -1,10 +1,11 @@
+import { ObjectId } from "mongodb";
 import  {client}  from "./index.js";
 
 export async function updateMovieById(id, data) {
   return await client
     .db("b32we")
     .collection("movies")
-    .updateOne({ id: id }, { $set: data });
+    .updateOne({_id: ObjectId(id)}, { $set: data });
 }
 export async function createMovies(data) {
   return await client
@@ -16,13 +17,13 @@ export async function deleteMovieById(id) {
   return await client
     .db("b32we")
     .collection("movies")
-    .deleteOne({ id: id });
+    .deleteOne({_id: ObjectId(id)});
 }
 export async function getMovieById(id) {
   return await client
     .db("b32we")
     .collection("movies")
-    .findOne({ id: id });
+    .findOne({ _id: ObjectId(id) });
 }
 export async function getAllMovies(req) {
   return await client
@@ -31,4 +32,4 @@ export async function getAllMovies(req) {
     .find(req.query)
     .toArray();
 }
-// export const HelpCount = client;
+export { ObjectId };

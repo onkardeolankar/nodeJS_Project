@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 // import {HelpCount} from "./helper.js";
 import {moviesRouter} from "./movies.js";
 import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
 // console.log(process.env.MONGO_URL);
@@ -167,6 +169,54 @@ app.post("/mobiles", express.json(), async function (req, res){
 
   res.send(result);
 });
+async function generateHashedPAssword(password){
+  const NO_OF_ROUNDS = 10;
+  const salt = await bcrypt.genSalt(NO_OF_ROUNDS);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  console.log(salt, hashedPassword);
+  return hashedPassword
+}
 
+app.post("/signup", async function(req,res){
+  const {username,password}= req.body;
+  const hashedPassword = await generateHashedPAssword("Password@12345");
+  const output= await client.db("b32we").collection("users").insertOne({username : username , password : hashedPassword });
+  res.send(output);
+});
+
+app.post("/signup", async function(req,res){
+  const {username,password}= req.body;
+  const output1= await client.db("b32we").collection("users").findOne({username : username });
+  if(output1){
+    res.send({message: "Username already exits"}); 
+  }
+  else if(password.length < 8){
+    res.status(400).send({message : "Password must be greater than 8 characters"});
+
+  }
+  else{
+    const hashedPassword = await generateHashedPAssword(password);
+    const output= await client.db("b32we").collection("users").insertOne({username : username , password : hashedPassword });
+    res.send(output);
+  }
+});
+app.post("/login", async function(req,res){
+  const {username,password}= req.body;
+  const output1= await client.db("b32we").collection("users").findOne({username : username });
+  console.log(output1);
+  if(!output1){
+    res.status(401).send({message : "Invalid Credentials"});
+  }else{
+    const storedPassword = output1.password;
+    const isPasswordMatched = await bcrypt.compare(password,storedPassword);
+    console.log(isPasswordMatched);
+    if(isPasswordMatched){
+      const token = jwt.sign({id : output1._id},process.env.SECRET_KEY);
+      res.send({msg : "Successful Login", token: token});
+    }else{
+      res.status(401).send({message : "Invalid Credentials"});
+    }
+  }
+});
 export {client};
 
