@@ -177,12 +177,12 @@ async function generateHashedPAssword(password){
   return hashedPassword
 }
 
-app.post("/signup", async function(req,res){
-  const {username,password}= req.body;
-  const hashedPassword = await generateHashedPAssword("Password@12345");
-  const output= await client.db("b32we").collection("users").insertOne({username : username , password : hashedPassword });
-  res.send(output);
-});
+// app.post("/signup", async function(req,res){
+//   const {username,password}= req.body;
+//   const hashedPassword = await generateHashedPAssword("Password@12345");
+//   const output= await client.db("b32we").collection("users").insertOne({username : username , password : hashedPassword });
+//   res.send(output);
+// });
 
 app.post("/signup", async function(req,res){
   const {username,password}= req.body;
